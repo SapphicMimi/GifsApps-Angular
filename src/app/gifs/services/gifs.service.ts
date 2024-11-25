@@ -13,7 +13,8 @@ export class GifsService {
   private serviceUrl: string = 'https://api.giphy.com/v1/gifs';
 
   constructor(private http: HttpClient) {
-
+    this.loadLocalStorage();
+    console.log('Gifs Service Ready')
   }
 
   public get tagsHistory(): string[] {
@@ -34,6 +35,14 @@ export class GifsService {
 
   private saveLocalStorage(): void {
     localStorage.setItem('history', JSON.stringify(this._tagsHistory))
+  }
+
+  private loadLocalStorage(): void {
+    if(!localStorage.getItem('history')) return;
+
+    this._tagsHistory = JSON.parse(localStorage.getItem('history')!);
+
+    this.searchTag(this._tagsHistory[0]);
   }
 
   public searchTag(tag: string): void {
