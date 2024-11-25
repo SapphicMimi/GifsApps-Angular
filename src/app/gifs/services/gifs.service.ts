@@ -1,10 +1,16 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({providedIn: 'root'})
 
 export class GifsService {
   private _tagsHistory: string[] = [];
-  private apiKey: string = "b1ZzfN6ByPfjRThKfOHBBiISJpHR5x4m";
+  private apiKey: string = 'b1ZzfN6ByPfjRThKfOHBBiISJpHR5x4m';
+  private serviceUrl: string = 'https://api.giphy.com/v1/gifs';
+
+  constructor(private http: HttpClient) {
+
+  }
 
   public get tagsHistory(): string[] {
     return [...this._tagsHistory];
@@ -26,6 +32,28 @@ export class GifsService {
     // if(tag ==  '') return;
 
     this.organizeHistory(tag);
+
+    const params = new HttpParams()
+      .set('api_key', this.apiKey)
+      .set('limit', '15')
+      .set('q', tag)
+
+    this.http.get(`${this.serviceUrl}/search`, {params})
+      .subscribe(resp => {
+        console.log(resp);
+      })
+
+    // Esto es con Java, cosa que queremos hacerlo con Angular
+    /*
+    fetch('https://api.giphy.com/v1/gifs/search?api_key=b1ZzfN6ByPfjRThKfOHBBiISJpHR5x4m&q=valorant&limit=15')
+      .then(resp => resp.json())
+      .then(data => console.log(data));
+    */
+    /*
+    const resp = await fetch('https://api.giphy.com/v1/gifs/search?api_key=b1ZzfN6ByPfjRThKfOHBBiISJpHR5x4m&q=valorant&limit=15');
+    const data = await resp.json();
+    console.log(data);
+    */
   }
 
   // Como yo lo he hecho
