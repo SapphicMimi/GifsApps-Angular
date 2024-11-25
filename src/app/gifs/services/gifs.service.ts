@@ -45,8 +45,6 @@ export class GifsService {
     this.http.get<SearchResponse>(`${this.serviceUrl}/search`, {params})
       .subscribe(resp => {
         this.gifList = resp.data;
-
-        console.log({gifs: this.gifList});
       })
 
     // Esto es con Java, cosa que queremos hacerlo con Angular
