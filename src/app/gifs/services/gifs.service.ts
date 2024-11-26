@@ -14,7 +14,6 @@ export class GifsService {
 
   constructor(private http: HttpClient) {
     this.loadLocalStorage();
-    console.log('Gifs Service Ready')
   }
 
   public get tagsHistory(): string[] {
